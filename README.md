@@ -1,5 +1,22 @@
+# Climate Analysis and Exploration
 
+This project is for doing climate analysis of Hawaii, using SQLAlchemy and designing a Flask API based on the queries.
 
+**Technologies/Framework Used:**
+**Database**
+* sqlite
+**Programming languages/tools/libraries**
+* Python
+* SQLAlchemy ORM queries
+* pandas
+* numpy
+* matplotlib
+* JSON Traversals
+* Flask API
+"------------------------------------------------------------------------------------------------------------------------------------"
+# Using SQLAlchemy create_engine to connect to sqlite database
+# Using SQLALchemy automap_base() to reflect tables into classes and save reference as variables
+"------------------------------------------------------------------------------------------------------------------------------------"
 ```python
 # Importing dependies for visualizations
 %matplotlib inline
@@ -268,7 +285,12 @@ prcp_df.sort_values(by='date').head()
 ```python
 plt.rcParams['figure.figsize'] = [15,10]
 ```
-
+"------------------------------------------------------------------------------------------------------------------------------------"
+# Precipitation Analysis
+* Designing a query to retrieve the last 12 months of precipitation data
+* Loading the query results into a Pandas DataFrame
+* Using Pandas to print the summary statistics and Matplotlib to plot the results
+"------------------------------------------------------------------------------------------------------------------------------------"
 
 ```python
 # Use Pandas Plotting with Matplotlib to plot the data
@@ -350,8 +372,12 @@ prcp_df.describe()
   </tbody>
 </table>
 </div>
-
-
+"------------------------------------------------------------------------------------------------------------------------------------"
+# Station Analysis
+* Designing a query to calculate the total number of stations.
+* Designing a query to find the most active stations.
+* Designing a query to retrieve the last 12 months of temperature observation data
+"------------------------------------------------------------------------------------------------------------------------------------"
 
 
 ```python
@@ -599,4 +625,134 @@ plt.show()
 
 
 ![png](avgtemp.png)
+"------------------------------------------------------------------------------------------------------------------------------------"
+# Climate App
+* Designing a Flask API based on the queries
+* Using Flask jsonify to convert API data into a valid JSON response object
+"------------------------------------------------------------------------------------------------------------------------------------"
 
+# 1. import Flask
+from flask import Flask, jsonify
+
+# 2. Create an app
+app = Flask(__name__)
+
+
+import numpy as np
+import sqlalchemy
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
+from sqlalchemy import create_engine, func
+import datetime as dt
+
+#################################################
+# Database Setup
+#################################################
+engine = create_engine("sqlite:///Resources/hawaii.sqlite")
+
+# reflect an existing database into a new model
+Base = automap_base()
+
+# reflect the tables
+Base.prepare(engine, reflect=True)
+
+# Save reference to the table
+Measurement = Base.classes.measurement
+Station = Base.classes.station
+
+# Create our session (link) from Python to the DB
+session = Session(engine)
+
+#################################################
+# Flask Setup
+#################################################
+app = Flask(__name__)
+
+
+#################################################
+# Flask Routes
+#################################################
+
+@app.route("/")
+def welcome():
+    """List all available api routes."""
+    return (
+        f"Available Routes:<br/>"
+        f"/api/v1.0/precipitation<br/>"
+        f"/api/v1.0/stations<br/>"
+        f"/api/v1.0/tobs<br/>"
+        f"/api/v1.0/<start_date><br/>"
+        f"/api/v1.0/<start_date>/<end_date>"
+    )
+
+
+@app.route("/api/v1.0/precipitation")
+def precipitation():
+    results = session.query(Measurement).all()
+
+    # Create a dictionary from the row data and append to a list of all_precipitations
+    all_precipitations = []
+    for p in results:
+        precipitation_dict = {}
+        precipitation_dict["date"] = p.date
+        precipitation_dict["tobs"] = p.tobs
+        all_precipitations.append(precipitation_dict)
+
+    return jsonify(all_precipitations)
+
+@app.route("/api/v1.0/stations")
+def stations():
+    # query all stations
+    results = session.query(Measurement.station).all()
+    
+     # Convert list of tuples into normal list
+    all_stations = list(np.ravel(results))
+    
+    return jsonify(all_stations)
+
+
+@app.route("/api/v1.0/tobs")
+def tobs():
+    results = session.query(Measurement.tobs).all()
+    all_tobs = list(np.ravel(results))
+    return jsonify(all_tobs)
+
+@app.route("/api/v1.0/<start_date>")
+def calc_temps(start_date):
+
+    
+    result=session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
+        filter(Measurement.date >= start_date).all()
+
+    # Convert the query results to a Dictionary using date as the key and tobs as the value.
+    tobs=[]
+    for row in result:
+        tobs_dict = {}
+        tobs_dict["TMIN"] = row[0]
+        tobs_dict["TAVG"] = row[1]
+        tobs_dict["TMAX"] = row[2]
+        tobs.append(tobs_dict)
+
+    return jsonify(tobs)
+
+@app.route("/api/v1.0/<start_date>/<end_date>")
+def calc_temps_dates(start_date, end_date):
+
+    result=session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
+        filter(Measurement.date >= start_date).\
+        filter(Measurement.date <= end_date).all()
+    
+    # Convert the query results to a Dictionary using date as the key and tobs as the value.
+    tobs=[]
+    for row in result:
+        tobs_dict = {}
+        tobs_dict["TMIN"] = row[0]
+        tobs_dict["TAVG"] = row[1]
+        tobs_dict["TMAX"] = row[2]
+        tobs.append(tobs_dict)
+
+    return jsonify(tobs)
+    
+
+if __name__ == '__main__':
+    app.run(debug=True)
