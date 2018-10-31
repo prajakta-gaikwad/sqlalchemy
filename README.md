@@ -14,10 +14,10 @@ This project is for doing climate analysis of Hawaii, using SQLAlchemy and desig
 * JSON Traversals
 * Flask API
 
-"------------------------------------------------------------------------------------------------------------------------------------"
+
 ### Using SQLAlchemy create_engine to connect to sqlite database
 ### Using SQLALchemy automap_base() to reflect tables into classes and save reference as variables
-"------------------------------------------------------------------------------------------------------------------------------------"
+
 ```python
 # Importing dependies for visualizations
 %matplotlib inline
@@ -626,12 +626,12 @@ plt.show()
 
 
 ![png](avgtemp.png)
-"------------------------------------------------------------------------------------------------------------------------------------"
+
 # Climate App
 * Designing a Flask API based on the queries
 * Using Flask jsonify to convert API data into a valid JSON response object
-(Following code is saved as **app.py**)
-"------------------------------------------------------------------------------------------------------------------------------------"
+* (Following code is saved as **app.py**)
+
 
 #### import Flask
 from flask import Flask, jsonify
