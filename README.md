@@ -286,12 +286,12 @@ prcp_df.sort_values(by='date').head()
 ```python
 plt.rcParams['figure.figsize'] = [15,10]
 ```
-"------------------------------------------------------------------------------------------------------------------------------------/n"
+
 # Precipitation Analysis
 * Designing a query to retrieve the last 12 months of precipitation data
 * Loading the query results into a Pandas DataFrame
 * Using Pandas to print the summary statistics and Matplotlib to plot the results
-"------------------------------------------------------------------------------------------------------------------------------------/n"
+
 
 ```python
 # Use Pandas Plotting with Matplotlib to plot the data
@@ -373,12 +373,12 @@ prcp_df.describe()
   </tbody>
 </table>
 </div>
-"------------------------------------------------------------------------------------------------------------------------------------/n"
+
 # Station Analysis
 * Designing a query to calculate the total number of stations.
 * Designing a query to find the most active stations.
 * Designing a query to retrieve the last 12 months of temperature observation data
-"------------------------------------------------------------------------------------------------------------------------------------/n"
+
 
 
 ```python
@@ -630,6 +630,7 @@ plt.show()
 # Climate App
 * Designing a Flask API based on the queries
 * Using Flask jsonify to convert API data into a valid JSON response object
+(Following code is saved as **app.py**)
 "------------------------------------------------------------------------------------------------------------------------------------"
 
 #### import Flask
