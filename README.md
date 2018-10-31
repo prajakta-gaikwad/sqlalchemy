@@ -2,7 +2,7 @@
 
 This project is for doing climate analysis of Hawaii, using SQLAlchemy and designing a Flask API based on the queries.
 
-**Technologies/Framework Used:**
+## Technologies/Framework Used:
 ### Database
 * sqlite
 ### Programming languages/tools/libraries
