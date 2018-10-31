@@ -281,7 +281,7 @@ plt.show()
 ```
 
 
-![png](output_19_0.png)
+![png](precipitation.png)
 
 
 
@@ -488,7 +488,7 @@ plt.show()
 ```
 
 
-![png](output_25_0.png)
+![png](temperature.png)
 
 
 
@@ -598,5 +598,5 @@ plt.show()
 ```
 
 
-![png](output_30_0.png)
+![png](avgtemp.png)
 
