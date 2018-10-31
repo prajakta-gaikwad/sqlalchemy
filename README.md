@@ -286,12 +286,12 @@ prcp_df.sort_values(by='date').head()
 ```python
 plt.rcParams['figure.figsize'] = [15,10]
 ```
-"------------------------------------------------------------------------------------------------------------------------------------"
+"------------------------------------------------------------------------------------------------------------------------------------/n"
 # Precipitation Analysis
 * Designing a query to retrieve the last 12 months of precipitation data
 * Loading the query results into a Pandas DataFrame
 * Using Pandas to print the summary statistics and Matplotlib to plot the results
-"------------------------------------------------------------------------------------------------------------------------------------"
+"------------------------------------------------------------------------------------------------------------------------------------/n"
 
 ```python
 # Use Pandas Plotting with Matplotlib to plot the data
@@ -373,12 +373,12 @@ prcp_df.describe()
   </tbody>
 </table>
 </div>
-"------------------------------------------------------------------------------------------------------------------------------------"
+"------------------------------------------------------------------------------------------------------------------------------------/n"
 # Station Analysis
 * Designing a query to calculate the total number of stations.
 * Designing a query to find the most active stations.
 * Designing a query to retrieve the last 12 months of temperature observation data
-"------------------------------------------------------------------------------------------------------------------------------------"
+"------------------------------------------------------------------------------------------------------------------------------------/n"
 
 
 ```python
@@ -632,10 +632,10 @@ plt.show()
 * Using Flask jsonify to convert API data into a valid JSON response object
 "------------------------------------------------------------------------------------------------------------------------------------"
 
-# 1. import Flask
+#### import Flask
 from flask import Flask, jsonify
 
-# 2. Create an app
+#### Create an app
 app = Flask(__name__)
 
 
@@ -646,33 +646,23 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 import datetime as dt
 
-#################################################
-# Database Setup
-#################################################
+#### Database Setup
 engine = create_engine("sqlite:///Resources/hawaii.sqlite")
 
-# reflect an existing database into a new model
+#### reflect an existing database into a new model
 Base = automap_base()
 
-# reflect the tables
+#### reflect the tables
 Base.prepare(engine, reflect=True)
 
-# Save reference to the table
+#### Save reference to the table
 Measurement = Base.classes.measurement
 Station = Base.classes.station
 
-# Create our session (link) from Python to the DB
+#### Create our session (link) from Python to the DB
 session = Session(engine)
 
-#################################################
-# Flask Setup
-#################################################
-app = Flask(__name__)
-
-
-#################################################
-# Flask Routes
-#################################################
+#### Flask Routes
 
 @app.route("/")
 def welcome():
@@ -754,6 +744,5 @@ def calc_temps_dates(start_date, end_date):
 
     return jsonify(tobs)
     
-
 if __name__ == '__main__':
     app.run(debug=True)
